@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MoMo ImgBB Studio</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="overlay">
+
+<header>
+    <h1>🚀 MoMo ImgBB Studio</h1>
+    <p>رفع وإدارة الصور عبر ImgBB</p>
+</header>
+
+
+<main>
+
+
+<!-- API MANAGER -->
+
+<section class="card">
+
+<h2>🔑 إدارة API</h2>
+
+<div id="apiList"></div>
+
+
+<div class="api-add">
+
+<input 
+id="apiName"
+placeholder="اسم الحس��ب (مثلا حساب 1)"
+>
+
+
+<input 
+id="apiKey"
+placeholder="ضع ImgBB API Key"
+>
+
+
+<button onclick="addAPI()">
++ إضافة API
+</button>
+
+</div>
+
+
+<div class="mode">
+
+<label>
+<input type="radio" name="mode" value="manual" checked>
+اختيار يدوي
+</label>
+
+
+<label>
+<input type="radio" name="mode" value="auto">
+تدوير تلقائي
+</label>
+
+</div>
+
+<select id="apiSelect" style="display:none;"></select>
+
+
+</section>
+
+
+
+<!-- UPLOAD AREA -->
+
+
+<section class="card">
+
+
+<h2>📤 رفع الصور</h2>
+
+
+<div 
+id="dropArea"
+class="drop-area"
+>
+
+
+<div class="upload-icon">
+📷
+</div>
+
+
+<p>
+اسحب الصور هنا
+</p>
+
+<span>
+أو
+</span>
+
+
+<label class="upload-btn">
+
+اختيار الصور
+
+<input 
+type="file"
+id="fileInput"
+multiple
+accept="image/*"
+hidden
+>
+
+</label>
+
+
+</div>
+
+
+<div id="preview"></div>
+
+
+<button 
+class="main-btn"
+onclick="uploadImages()"
+>
+
+🚀 بدء الرفع
+
+</button>
+
+
+</section>
+
+
+
+
+
+<!-- RESULTS -->
+
+
+<section class="card">
+
+
+<h2>🔗 الروابط</h2>
+
+
+<button 
+onclick="copyAll()"
+class="copy-all"
+>
+
+📋 نسخ كل الروابط
+
+</button>
+
+
+<div id="results"></div>
+
+
+</section>
+
+
+
+
+<!-- SETTINGS -->
+
+
+<section class="card settings">
+
+
+<h2>⚙️ معلومات</h2>
+
+
+<p>
+عدد الحسابات:
+<span id="apiCount">0</span>
+</p>
+
+
+<p>
+الصور المرفوعة:
+<span id="imageCount">0</span>
+</p>
+
+
+</section>
+
+
+
+</main>
+
+
+<footer>
+
+MoMo ImgBB Studio © 2026
+
+</footer>
+
+
+</div>
+
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
