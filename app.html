@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 MoMo ImgBB Studio</title>
+
+    <style>
+        *{
+            box-sizing:border-box;
+        }
+
+        body{
+            margin:0;
+            min-height:100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-image:url("https://i.ibb.co/ymnmTXNK/5ef127ec769a.png");
+            background-size:cover;
+            background-position:center;
+            background-attachment:fixed;
+            color:white;
+        }
+
+        .overlay{
+            min-height:100vh;
+            padding:25px;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(5px);
+        }
+
+        header{
+            text-align:center;
+            margin-bottom:30px;
+        }
+
+        header h1{
+            font-size:38px;
+            margin:10px;
+            text-shadow: 0 0 20px #000;
+        }
+
+        header p{
+            color:#ddd;
+        }
+
+        main{
+            max-width:1000px;
+            margin:auto;
+        }
+
+        .card{
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(15px);
+            border-radius:25px;
+            padding:25px;
+            margin-bottom:25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,.3);
+            animation: fade .5s ease;
+        }
+
+        @keyframes fade{
+            from{
+                opacity:0;
+                transform:translateY(20px);
+            }
+            to{
+                opacity:1;
+            }
+        }
+
+        h2{
+            margin-top:0;
+            border-bottom: 1px solid rgba(255,255,255,.2);
+            padding-bottom:10px;
+        }
+
+        input, select{
+            width:100%;
+            padding:13px;
+            margin:7px 0;
+            border:none;
+            outline:none;
+            border-radius:12px;
+            background: rgba(255,255,255,.15);
+            color:white;
+        }
+
+        input::placeholder{
+            color:#ccc;
+        }
+
+        select{
+            cursor: pointer;
+        }
+
+        select option{
+            background: #333;
+            color: white;
+        }
+
+        button,
+        .upload-btn{
+            border:none;
+            padding:13px 22px;
+            border-radius:15px;
+            cursor:pointer;
+            font-weight:bold;
+            transition:.3s;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            color:white;
+        }
+
+        button:hover,
+        .upload-btn:hover{
+            transform: translateY(-3px);
+            filter: brightness(1.2);
+        }
+
+        .delete-btn{
+            background:#e74c3c;
+            padding:8px 15px;
+            font-size: 12px;
+        }
+
+        .api-add{
+            display:grid;
+            gap:10px;
+        }
+
+        #apiList{
+            margin-bottom:15px;
+        }
+
+        .api-box{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:15px;
+            margin:10px 0;
+            background: rgba(0,0,0,.25);
+            border-radius:15px;
+        }
+
+        .mode{
+            display:flex;
+            gap:20px;
+            margin-top:15px;
+        }
+
+        .mode input{
+            width:auto;
+        }
+
+        .drop-area{
+            border: 2px dashed rgba(255,255,255,.5);
+            border-radius:25px;
+            padding:45px;
+            text-align:center;
+            transition:.3s;
+        }
+
+        .drop-area.active{
+            background: rgba(0,200,255,.2);
+            transform: scale(1.03);
+        }
+
+        .upload-icon{
+            font-size:60px;
+        }
+
+        .upload-btn{
+            display:inline-block;
+            margin-top:15px;
+        }
+
+        #preview{
+            display:grid;
+            grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
+            gap:15px;
+            margin-top:20px;
+        }
+
+        .preview-card{
+            background: rgba(0,0,0,.3);
+            padding:10px;
+            border-radius:15px;
+            position: relative;
+        }
+
+        .preview-card img{
+            width:100%;
+            height:120px;
+            object-fit:cover;
+            border-radius:10px;
+        }
+
+        .preview-card small{
+            color: #aaa;
+            font-size: 11px;
+        }
+
+        .remove-preview-btn{
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 25px;
+            height: 25px;
+            padding: 0;
+            background: rgba(231, 76, 60, 0.8);
+            border-radius: 50%;
+            font-size: 14px;
+        }
+
+        .main-btn{
+            width:100%;
+            margin-top:25px;
+            font-size:18px;
+        }
+
+        .result-card{
+            background: rgba(0,0,0,.25);
+            padding:15px;
+            border-radius:15px;
+            margin-top:15px;
+            border-left: 4px solid #0ea;
+        }
+
+        .result-card.error{
+            border-left-color: #e74c3c;
+        }
+
+        .result-card input{
+            direction:ltr;
+        }
+
+        .copy-btn{
+            background:#27ae60;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .copy-all{
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            width: 100%;
+        }
+
+        .upload-summary{
+            background: rgba(0,0,0,.3);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        footer{
+            text-align:center;
+            margin-top:30px;
+            color:#ccc;
+        }
+
+        @media(max-width:600px){
+            header h1{
+                font-size:28px;
+            }
+            .overlay{
+                padding:12px;
+            }
+            .card{
+                padding:18px;
+            }
+            .drop-area{
+                padding:30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="overlay">
+
+    <header>
+        <h1>🚀 MoMo ImgBB Studio</h1>
+        <p>رفع وإدارة الصور عبر ImgBB</p>
+    </header>
+
+    <main>
+
+        <!-- API MANAGER -->
+        <section class="card">
+            <h2>🔑 إدارة API</h2>
+            
+            <div id="apiList"></div>
+
+            <div class="api-add">
+                <input 
+                    id="apiName"
+                    placeholder="اسم الحساب (مثلا حساب 1)"
+                >
+                <input 
+                    id="apiKey"
+                    placeholder="ضع ImgBB API Key"
+                >
+                <button onclick="addAPI()">
+                    + إضافة API
+                </button>
+            </div>
+
+            <div class="mode">
+                <label>
+                    <input type="radio" name="mode" value="manual" checked>
+                    اختيار يدوي
+                </label>
+                <label>
+                    <input type="radio" name="mode" value="auto">
+                    تدوير تلقائي
+                </label>
+            </div>
+
+            <select id="apiSelect" style="display:none;"></select>
+        </section>
+
+        <!-- UPLOAD AREA -->
+        <section class="card">
+            <h2>📤 رفع الصور</h2>
+
+            <div id="dropArea" class="drop-area">
+                <div class="upload-icon">📷</div>
+                <p>اسحب الصور هنا</p>
+                <span>أو</span>
+                <label class="upload-btn">
+                    اختيار الصور
+                    <input 
+                        type="file"
+                        id="fileInput"
+                        multiple
+                        accept="image/*"
+                        hidden
+                    >
+                </label>
+            </div>
+
+            <div id="preview"></div>
+
+            <button class="main-btn" onclick="uploadImages()">
+                🚀 بدء الرفع
+            </button>
+        </section>
+
+        <!-- RESULTS -->
+        <section class="card">
+            <h2>🔗 الروابط</h2>
+
+            <button onclick="copyAll()" class="copy-all">
+                📋 نسخ كل الروابط
+            </button>
+
+            <div id="results"></div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section class="card settings">
+            <h2>⚙️ معلومات</h2>
+
+            <p>عدد الحسابات: <span id="apiCount">0</span></p>
+            <p>الصور المرفوعة: <span id="imageCount">0</span></p>
+        </section>
+
+    </main>
+
+    <footer>
+        MoMo ImgBB Studio © 2026
+    </footer>
+
+</div>
+
+<script>
+    let apis = JSON.parse(localStorage.getItem("imgbb_apis")) || [];
+    let selectedFiles = [];
+    let uploadedLinks = [];
+    let uploadCounter = 0;
+
+    // تحميل API عند فتح الموقع
+    window.onload = () => {
+        renderAPIs();
+        updateStats();
+    };
+
+    // إضافة API جديد
+    function addAPI(){
+        let name = document.getElementById("apiName").value.trim();
+        let key = document.getElementById("apiKey").value.trim();
+
+        if(!name || !key){
+            alert("أدخل اسم الحساب و API Key");
+            return;
+        }
+
+        if(key.length < 20){
+            alert("API Key يبدو غير صحيح (أقصر من 20 حرف)");
+            return;
+        }
+
+        apis.push({
+            name: name,
+            key: key,
+            uploads: 0
+        });
+
+        saveAPIs();
+        document.getElementById("apiName").value = "";
+        document.getElementById("apiKey").value = "";
+        showMessage("✅ تمت إضافة API بنجاح");
+    }
+
+    function saveAPIs(){
+        localStorage.setItem("imgbb_apis", JSON.stringify(apis));
+        renderAPIs();
+        updateStats();
+    }
+
+    // عرض الحسابات
+    function renderAPIs(){
+        let box = document.getElementById("apiList");
+        box.innerHTML = "";
+
+        if(apis.length === 0){
+            box.innerHTML = "<p style='color:#aaa; text-align:center;'>لا توجد حسابات - أضف حساب أولاً</p>";
+            
+            let select = document.getElementById("apiSelect");
+            if(select) select.style.display = "none";
+            return;
+        }
+
+        let select = document.getElementById("apiSelect");
+        if(select){
+            select.innerHTML = "";
+            apis.forEach((api, index) => {
+                let option = document.createElement("option");
+                option.value = index;
+                option.textContent = `${api.name} (${api.uploads} صورة)`;
+                select.appendChild(option);
+            });
+            select.style.display = "block";
+        }
+
+        apis.forEach((api, index) => {
+            let hidden = api.key.substring(0,5) + "********" + api.key.slice(-4);
+
+            box.innerHTML += `
+                <div class="api-box">
+                    <div>
+                        <b>${api.name}</b><br>
+                        🔑 ${hidden}<br>
+                        📷 ${api.uploads} صورة
+                    </div>
+                    <button onclick="removeAPI(${index})" class="delete-btn">
+                        حذف
+                    </button>
+                </div>
+            `;
+        });
+    }
+
+    function removeAPI(index){
+        if(confirm("حذف هذا الحساب؟")){
+            apis.splice(index, 1);
+            saveAPIs();
+            showMessage("✅ تم حذف الحساب");
+        }
+    }
+
+    // اختيار الصور
+    document
+        .getElementById("fileInput")
+        .addEventListener("change", e => {
+            selectedFiles = Array.from(e.target.files);
+            showPreview();
+        });
+
+    // Drag & Drop
+    let drop = document.getElementById("dropArea");
+
+    drop.addEventListener("dragover", e => {
+        e.preventDefault();
+        drop.classList.add("active");
+    });
+
+    drop.addEventListener("dragleave", () => {
+        drop.classList.remove("active");
+    });
+
+    drop.addEventListener("drop", e => {
+        e.preventDefault();
+        drop.classList.remove("active");
+        selectedFiles = Array.from(e.dataTransfer.files);
+        showPreview();
+    });
+
+    // معاينة الصور
+    function showPreview(){
+        let box = document.getElementById("preview");
+        box.innerHTML = "";
+
+        selectedFiles.forEach((file, index) => {
+            if(!file.type.startsWith("image/")){
+                showMessage("⚠️ يجب اختيار صور فقط");
+                selectedFiles.splice(index, 1);
+                return;
+            }
+
+            let url = URL.createObjectURL(file);
+            let size = (file.size / 1024).toFixed(2);
+
+            box.innerHTML += `
+                <div class="preview-card">
+                    <img src="${url}">
+                    <p>${file.name}</p>
+                    <small>${size} KB</small>
+                    <button class="remove-preview-btn" onclick="removePreview(${index})">✕</button>
+                </div>
+            `;
+        });
+    }
+
+    function removePreview(index){
+        selectedFiles.splice(index, 1);
+        showPreview();
+    }
+
+    // اختيار API
+    let autoIndex = 0;
+
+    function getAPI(){
+        if(apis.length === 0){
+            alert("❌ أضف API أولاً");
+            return null;
+        }
+
+        let mode = document.querySelector('input[name="mode"]:checked').value;
+        let api;
+
+        if(mode === "auto"){
+            api = apis[autoIndex];
+            autoIndex++;
+            if(autoIndex >= apis.length) autoIndex = 0;
+        } else {
+            let selectIndex = document.getElementById("apiSelect").value;
+            api = apis[selectIndex];
+        }
+
+        return api;
+    }
+
+    // رفع الصور
+    async function uploadImages(){
+        if(selectedFiles.length === 0){
+            alert("❌ اختر صور أولاً");
+            return;
+        }
+
+        if(apis.length === 0){
+            alert("❌ أضف API حساب أولاً");
+            return;
+        }
+
+        uploadedLinks = [];
+        let result = document.getElementById("results");
+        result.innerHTML = "<p style='text-align:center; color:#0ea;'>⏳ جاري الرفع...</p>";
+
+        let successCount = 0;
+        let failCount = 0;
+
+        for(let file of selectedFiles){
+            let api = getAPI();
+
+            if(!api) return;
+
+            try {
+                let base64 = await convertBase64(file);
+
+                let form = new FormData();
+                form.append("key", api.key);
+                form.append("image", base64.split(",")[1]);
+
+                let response = await fetch(
+                    "https://api.imgbb.com/1/upload",
+                    {
+                        method: "POST",
+                        body: form,
+                        timeout: 30000
+                    }
+                );
+
+                let data = await response.json();
+
+                if(data.success){
+                    let link = data.data.url;
+                    uploadedLinks.push(link);
+                    api.uploads++;
+                    successCount++;
+                    saveAPIs();
+
+                    result.innerHTML += `
+                        <div class="result-card success">
+                            <b>✅ ${file.name}</b>
+                            <input value="${link}" readonly>
+                            <button class="copy-btn"
+                            onclick="copyText('${link}')">
+                            📋 نسخ
+                            </button>
+                        </div>
+                    `;
+
+                } else {
+                    failCount++;
+                    let errorMsg = data.error?.message || "خطأ غير معروف";
+                    result.innerHTML += `
+                        <div class="result-card error">
+                        ❌ فشل رفع ${file.name}<br>
+                        <small>${errorMsg}</small>
+                        </div>
+                    `;
+                }
+
+            } catch(error){
+                failCount++;
+                result.innerHTML += `
+                    <div class="result-card error">
+                    ❌ خطأ في ${file.name}<br>
+                    <small>${error.message}</small>
+                    </div>
+                `;
+            }
+        }
+
+        result.innerHTML += `
+            <div class="upload-summary">
+            ✅ نجح: ${successCount} | ❌ فشل: ${failCount}
+            </div>
+        `;
+
+        updateStats();
+    }
+
+    // تحويل الصورة Base64
+    function convertBase64(file){
+        return new Promise((resolve, reject) => {
+            if(file.size > 32 * 1024 * 1024){
+                reject(new Error("حجم الملف كبير جداً (أقل من 32 MB)"));
+                return;
+            }
+
+            let reader = new FileReader();
+
+            reader.onload = () => {
+                resolve(reader.result);
+            };
+
+            reader.onerror = () => {
+                reject(new Error("خطأ في قراءة الملف"));
+            };
+
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // نسخ رابط واحد
+    function copyText(text){
+        navigator.clipboard.writeText(text)
+            .then(() => showMessage("✅ تم النسخ"))
+            .catch(() => showMessage("❌ فشل النسخ"));
+    }
+
+    // نسخ كل الروابط
+    function copyAll(){
+        if(uploadedLinks.length === 0){
+            alert("❌ لا توجد روابط للنسخ");
+            return;
+        }
+
+        navigator.clipboard.writeText(uploadedLinks.join("\n"))
+            .then(() => showMessage("✅ تم نسخ جميع الروابط"))
+            .catch(() => showMessage("❌ فشل النسخ"));
+    }
+
+    // رسالة صغيرة
+    function showMessage(text){
+        let msg = document.createElement("div");
+        msg.innerHTML = text;
+        msg.style.position = "fixed";
+        msg.style.bottom = "30px";
+        msg.style.right = "30px";
+        msg.style.padding = "15px 25px";
+        msg.style.background = "rgba(0,0,0,.9)";
+        msg.style.borderRadius = "15px";
+        msg.style.zIndex = "999";
+        msg.style.border = "1px solid rgba(0,255,200,.3)";
+
+        document.body.appendChild(msg);
+
+        setTimeout(() => {
+            msg.remove();
+        }, 2500);
+    }
+
+    function updateStats(){
+        document.getElementById("apiCount").innerText = apis.length;
+
+        let count = 0;
+        apis.forEach(a => {
+            count += a.uploads;
+        });
+
+        document.getElementById("imageCount").innerText = count;
+    }
+</script>
+
+</body>
+
+</html>
